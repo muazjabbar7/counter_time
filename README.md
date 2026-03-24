@@ -134,6 +134,7 @@ Clicking it again sets timer_running back to True and starts a new thread (since
 Reset – stops the timer, clears variables, and resets all GUI elements.
 
 2.4 Display & Feedback
+
 update_display() – updates the time label and the progress bar value.
 
 timer_completed() – runs when the thread finishes.
