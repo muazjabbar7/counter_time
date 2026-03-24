@@ -1,0 +1,12 @@
+
+---
+
+## 📦 `requirements.txt`
+
+```txt
+# No external dependencies required.
+# Tkinter is part of the Python standard library.
+
+if not work then install tkinter:
+
+ pip install tkinter.
