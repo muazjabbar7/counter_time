@@ -1,77 +1,142 @@
-🧠 Code Explanation – What to Write
-1. Overall Structure
-Start with a high-level overview:
+# ⏱️ Countdown Timer
 
-The script begins with a menu asking the user to choose between GUI (1) or Console (2) version.
+A versatile countdown timer with **both GUI and console versions**.  
+Set custom time, use quick presets, and enjoy visual/audio alerts when time’s up.
 
-It then runs either a function (console_timer()) or creates a Tkinter window with the CountdownTimer class.
+![GUI Screenshot](Screenshot%202026-03-24%20190046.png)  
+*GUI version with progress bar and preset buttons*
 
-2. Console Version (console_timer())
-Explain how it works:
+![Console Screenshot](Screenshot%202026-03-24%20190142.png)  
+*Console version with simple text interface*
 
-Uses a loop to accept user input.
+---
 
-Parses either minutes seconds or just seconds.
+## ✨ Features
 
-Uses divmod to format time as MM:SS.
+- **Two interfaces** – choose between a modern GUI (Tkinter) or a lightweight console version
+- **Flexible time input** – enter minutes & seconds or just seconds
+- **Quick presets** – 1, 5, 10, 15 minutes (GUI only)
+- **Progress bar** – visual feedback (GUI only)
+- **Pause & resume** – control the timer as needed
+- **Sound & visual alerts** – system bell and flashing display on completion
+- **Cross‑platform** – works on Windows, macOS, and Linux
 
-Overwrites the same line with \r to create a live countdown.
+---
 
-Handles KeyboardInterrupt for early exit.
+## 📦 Requirements
 
-On completion, prints a message and rings the bell (\a).
+- Python 3.6 or higher
+- Tkinter (usually included with Python, but may need to be installed separately on Linux)
 
-3. GUI Version (CountdownTimer class)
-Break down the class into sections:
+No external libraries required – all code uses the standard library.
 
-Initialization – sets up variables, calls setup_gui().
+---
 
-GUI Layout – describes the widgets: title, digital clock, spinboxes, preset buttons, progress bar, control buttons, status label.
+## 🚀 Installation
 
-Preset Handling – set_preset() sets time from quick buttons.
-
-Timer Logic – start_timer() validates input, stores time, and starts a new thread (run_timer) so the GUI stays responsive.
-
-Threading – why threading is used (to prevent GUI freezing) and how root.after() updates the display safely.
-
-Pause/Resume – toggles timer_running, changes button text, restarts a thread when resuming.
-
-Reset – stops the timer, resets variables, and clears the GUI.
-
-Visual Feedback – update_display() updates the time label and progress bar; flash_display() makes the clock blink when time is up; timer_completed() shows a message and rings the bell.
-
-4. Key Functions
-Briefly mention any helper functions like update_display, flash_display, and why they exist.
-
-5. Why This Design?
-Mention the design choices:
-
-Two versions – flexibility for different users.
-
-Threading – keeps GUI interactive.
-
-No external libraries – uses only Python standard library, so easy to run anywhere.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/counter_time.git
+   cd counter_time
 
 
+   Run the script
+   python countdown_timer.py
 
-✅ Example Explanation (You Can Adapt)
-## 🧠 How the Code Works
+   Choose your version
 
-The program offers two interfaces:
+1 – GUI (graphical interface)
 
-### Console Version
-- Prompts for time in `minutes seconds` or just `seconds`.
-- Continuously updates the countdown on the same line.
-- Ends with an alert and a system bell.
+2 – Console (text‑based)
 
-### GUI Version
-Built with Tkinter, it uses a separate thread to keep the interface responsive.
+🎮 Usage
+1. GUI Version
+Set minutes and seconds using the spinboxes.
 
-- **Start**: Reads minutes/seconds, validates, and starts a background thread.
-- **Threading**: The countdown runs in a separate thread, calling `root.after()` to update the display safely.
-- **Pause/Resume**: Stops the thread; resuming starts a new one.
-- **Reset**: Stops the timer and clears all fields.
-- **Progress Bar**: Updates based on elapsed percentage.
-- **Alerts**: On completion, the display flashes, a message box appears, and the system bell rings.
+Click a preset button for quick settings.
 
-This design ensures a smooth user experience without freezing the window.
+Press Start to begin the countdown.
+
+Pause/Resume and Reset are also available.
+
+The progress bar fills as time elapses; the display flashes when the timer ends.
+
+2. Console Version
+Enter time in one of two formats:
+
+5 30 → 5 minutes and 30 seconds
+
+120 → 120 seconds (2 minutes)
+
+Type quit to exit.
+
+Press Ctrl+C to stop the timer early.
+
+🧠 Code Explanation
+The program starts with a simple menu asking the user to choose between the GUI (1) or console (2) version.
+It then runs either the console_timer() function or creates a Tkinter root window with the CountdownTimer class.
+
+1. Console Version – console_timer()
+Prompts the user for time input.
+
+Accepts either minutes seconds or just seconds.
+
+Uses divmod() to format the countdown as MM:SS.
+
+The sys.stdout.write with \r overwrites the same line, creating a real‑time effect.
+
+Handles KeyboardInterrupt to allow early exit.
+
+On completion, prints a message and triggers the system bell (\a).
+
+2. GUI Version – CountdownTimer Class
+Initialization (__init__)
+Sets up the main window (root).
+
+Defines timer variables: total_seconds, remaining_seconds, timer_running, timer_thread.
+
+Calls setup_gui() to build the interface.
+
+2.1 GUI Layout (setup_gui)
+Title – large bold label.
+
+Time display – a Label styled like a digital clock.
+
+Input frame – two spinboxes for minutes and seconds, with initial values 0 and 30.
+
+Preset buttons – using a loop to create buttons for 1, 5, 10, 15 minutes. Each button calls set_preset().
+
+Progress bar – a ttk.Progressbar styled with green colour.
+
+Control buttons – Start, Pause, Reset. The pause button initially disabled.
+
+Status label – shows current state (running, paused, etc.).
+
+2.2 Preset Handling (set_preset)
+Converts the preset seconds to minutes/seconds.
+
+Updates the spinboxes and the time display.
+
+Changes the status label.
+
+2.3 Timer Logic
+
+.Starting – start_timer() validates input, stores total seconds, and sets remaining_seconds.
+It starts a new thread (run_timer) to avoid freezing the GUI.
+
+.Threaded countdown – run_timer() runs in a separate thread.
+It updates the remaining seconds every second, and each second calls root.after(0, self.update_display) to safely update the GUI from a non‑main thread.
+
+Pause/Resume – pause_timer() toggles timer_running.
+When paused, the button text changes to “Resume” and its colour.
+Clicking it again sets timer_running back to True and starts a new thread (since the old one ended).
+
+Reset – stops the timer, clears variables, and resets all GUI elements.
+
+2.4 Display & Feedback
+update_display() – updates the time label and the progress bar value.
+
+timer_completed() – runs when the thread finishes.
+It changes the label colour, calls flash_display() for a visual effect, shows a message box, rings the bell (self.root.bell()), and resets the timer.
+
+flash_display() – recursively changes the display colour every 500 ms to create a flashing effect.
